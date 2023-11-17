@@ -27,4 +27,14 @@ public class ContaGatewayDummyImpl implements ContaGateway {
         contas.put(conta.getCpf(), conta);
         return conta;
     }
+
+    @Override
+    public Conta obterContaPorId(Long idConta) {
+        for (Conta conta : contas.values()) {
+            if (conta.getId().equals(idConta)) {
+                return conta;
+            }
+        }
+        return null;
+    }
 }
