@@ -1,4 +1,4 @@
-package com.ada.banco.domain.usecase;
+package com.ada.banco.domain.usecase.cliente;
 
 import com.ada.banco.domain.gateway.ClienteGateway;
 import com.ada.banco.domain.model.Cliente;

@@ -1,5 +1,6 @@
 package com.ada.banco.domain.model;
 
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
@@ -11,11 +12,8 @@ import java.math.BigDecimal;
 @Setter
 public class Conta {
     private Long id;
-    private Long agencia;
-    private Long digito;
-    private BigDecimal saldo; //mais preciso que double, melhor para grana
-
-    //Usuario / Titular
-    private String titular;
-    private String cpf;
+    private String numeroConta;
+    private TipoConta tipoConta;
+    private BigDecimal saldo;
+    private Long idCliente;
 }

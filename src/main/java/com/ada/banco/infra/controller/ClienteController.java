@@ -1,30 +1,51 @@
 package com.ada.banco.infra.controller;
 
-import com.ada.banco.domain.gateway.ClienteGateway;
 import com.ada.banco.domain.model.Cliente;
+import com.ada.banco.domain.usecase.cliente.BuscarClientePorCpf;
+import com.ada.banco.domain.usecase.cliente.CadastrarNovoCliente;
+import com.ada.banco.domain.usecase.cliente.ListarTodosOsClientes;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/clientes")
 public class ClienteController {
 
-    private final ClienteGateway clienteGateway;
+    private final BuscarClientePorCpf buscarClientePorCpf;
+    private final CadastrarNovoCliente cadastrarNovoCliente;
 
-    public ClienteController(ClienteGateway clienteGateway) {
-        this.clienteGateway = clienteGateway;
-    }
+    private final ListarTodosOsClientes listarTodosOsClientes;
 
-    @PostMapping
-    public ResponseEntity<Cliente> criarCliente(@RequestBody Cliente cliente) {
-        Cliente clienteSalvo = clienteGateway.salvar(cliente);
-        return ResponseEntity.status(HttpStatus.CREATED).body(clienteSalvo);
+    public ClienteController(BuscarClientePorCpf buscarClientePorCpf,
+                             CadastrarNovoCliente cadastrarNovoCliente,
+                             ListarTodosOsClientes listarTodosOsClientes) {
+        this.buscarClientePorCpf = buscarClientePorCpf;
+        this.cadastrarNovoCliente = cadastrarNovoCliente;
+        this.listarTodosOsClientes = listarTodosOsClientes;
     }
 
     @GetMapping("/{cpf:.+}")
     public ResponseEntity<Cliente> buscarCliente(@PathVariable String cpf) {
-        Cliente cliente = clienteGateway.buscarPorCpf(cpf);
+        Cliente cliente = buscarClientePorCpf.execute(cpf);
         return ResponseEntity.ok(cliente);
+    }
+
+    @PostMapping
+    public ResponseEntity<Cliente> criarCliente(@RequestBody Cliente cliente) {
+        try{
+            cadastrarNovoCliente.execute(cliente);
+            return ResponseEntity.status(HttpStatus.CREATED).body(cliente);
+        }catch (RuntimeException e){
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(cliente);
+        }
+    }
+
+    @GetMapping
+    public ResponseEntity<List<Cliente>> listarClientes() {
+        List<Cliente> clientes = listarTodosOsClientes.execute();
+        return ResponseEntity.ok(clientes);
     }
 }
