@@ -78,6 +78,19 @@ public class ContaGatewayImpl implements ContaGateway {
                 .collect(Collectors.toList());
     }
 
+    @Override
+    public Conta obterContaPorNumero(String numeroConta) {
+        try {
+            ContaEntity contaEntity = entityManager.createQuery(
+                            "SELECT c FROM conta c WHERE c.numeroConta = :numeroConta", ContaEntity.class)
+                    .setParameter("numeroConta", numeroConta)
+                    .getSingleResult();
+            return toDomain(contaEntity);
+        } catch (NoResultException e) {
+            return null;
+        }
+    }
+
 
     private Conta toDomain(ContaEntity contaEntity) {
         return new Conta(

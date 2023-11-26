@@ -1,4 +1,4 @@
-package com.ada.banco.domain.usecase;
+package com.ada.banco.domain.usecase.conta;
 
 import com.ada.banco.domain.gateway.ClienteGateway;
 import com.ada.banco.domain.gateway.ContaGateway;
@@ -39,6 +39,9 @@ public class CriarNovaContaTest {
         );
 
         assertEquals("Cliente não encontrado para o Id informado.", exception.getMessage());
+
+        verify(clienteGateway, times(1)).buscarPorId(1L);
+        verify(contaGateway, never()).obterContaPorIdCliente(1L);
         verify(contaGateway, never()).salvar(any(Conta.class));
     }
 
@@ -57,6 +60,9 @@ public class CriarNovaContaTest {
         );
 
         assertEquals("Usuário já possui uma conta", exception.getMessage());
+
+        verify(clienteGateway, times(1)).buscarPorId(idCliente);
+        verify(contaGateway, times(1)).obterContaPorIdCliente(idCliente);
         verify(contaGateway, never()).salvar(any(Conta.class));
     }
 
@@ -75,6 +81,10 @@ public class CriarNovaContaTest {
         assertNotNull(contaCriada);
         assertEquals(idCliente, contaCriada.getIdCliente());
         assertEquals("12345", contaCriada.getNumeroConta());
+
+        verify(clienteGateway, times(1)).buscarPorId(idCliente);
+        verify(contaGateway, times(1)).obterContaPorIdCliente(idCliente);
+        verify(contaGateway, times(1)).salvar(novaConta);
         verify(contaGateway).salvar(novaConta);
     }
 

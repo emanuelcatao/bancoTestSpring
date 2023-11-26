@@ -9,6 +9,7 @@ import jakarta.persistence.EntityManager;
 import jakarta.persistence.NoResultException;
 import jakarta.persistence.PersistenceContext;
 import jakarta.transaction.Transactional;
+import jakarta.validation.ConstraintViolationException;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -37,14 +38,24 @@ public class ClienteGatewayImpl implements ClienteGateway {
     @Override
     public Cliente salvar(Cliente cliente) {
         ClienteEntity clienteEntity = toEntity(cliente);
-        if (clienteEntity.getId() == null) {
-            entityManager.persist(clienteEntity);
-        } else {
-            clienteEntity = entityManager.merge(clienteEntity);
+
+        try {
+            if (clienteEntity.getId() == null) {
+                entityManager.persist(clienteEntity);
+            } else {
+                clienteEntity = entityManager.merge(clienteEntity);
+            }
+        } catch (ConstraintViolationException e) {
+            throw new IllegalArgumentException("Erro de validação: " +
+                    e.getConstraintViolations().stream()
+                    .map(cv -> cv.getMessage())
+                    .collect(Collectors.joining(", "))
+            );
         }
-        //clienteEntity.setCpf(String.valueOf(buscarPorCpf(clienteEntity.getCpf()).getId()));
+
         return toDomain(clienteEntity);
     }
+
 
     @Override
     public Cliente buscarPorId(Long idCliente) {

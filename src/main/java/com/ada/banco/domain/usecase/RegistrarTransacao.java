@@ -19,23 +19,20 @@ public class RegistrarTransacao {
         this.contaGateway = contaGateway;
     }
 
+    /**
+     * Registra uma transação. Aqui as validações são feitas antes de registrar a transação. De modo que
+     * não existe a necessidade de fazer novas validações aqui no registrar transacao.
+     *
+     * Fica a cargo desse usecase apenas o registro da transação.
+     * @param transacao
+     * @throws InvalidTransactionException
+     */
     public void execute(Transacao transacao) throws InvalidTransactionException {
-        if (transacao.getValor().compareTo(BigDecimal.ZERO) <= 0) {
-            throw new InvalidTransactionException("Valor da transação inválido.");
-        }
-
-        if (!TipoTransacao.DEPOSITO.equals(transacao.getTipo()) && !TipoTransacao.SAQUE.equals(transacao.getTipo())) {
+        if (!TipoTransacao.DEPOSITO.equals(transacao.getTipo()) &&
+                !TipoTransacao.SAQUE.equals(transacao.getTipo()) &&
+                !TipoTransacao.TRANSFERENCIA.equals(transacao.getTipo())
+            ) {
             throw new InvalidTransactionException("Tipo de transação inválido.");
-        }
-
-        // Validação da conta
-        Conta conta = contaGateway.obterContaPorId(transacao.getIdConta());
-        if (conta == null ) { // || conta.isBloqueada()
-            throw new InvalidTransactionException("Conta inválida.");
-        }
-
-        if ((conta.getSaldo().compareTo(transacao.getValor()) < 0) && (transacao.getTipo().equals(TipoTransacao.SAQUE))){
-            throw new InvalidTransactionException("Saldo insuficiente para saque.");
         }
 
         // Registra a transação após todas as validações

@@ -2,6 +2,8 @@ package com.ada.banco.infra.gateway.jpa;
 
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.validator.constraints.br.CPF;
+import org.springframework.validation.annotation.Validated;
 
 @Entity(name = "cliente")
 @NoArgsConstructor
@@ -16,5 +18,6 @@ public class ClienteEntity {
     @Column
     private String nome;
     @Column(unique = true)
+    @CPF(message = "CPF inválido")
     private String cpf;
 }

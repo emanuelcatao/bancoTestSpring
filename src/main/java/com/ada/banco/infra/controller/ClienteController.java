@@ -4,11 +4,15 @@ import com.ada.banco.domain.model.Cliente;
 import com.ada.banco.domain.usecase.cliente.BuscarClientePorCpf;
 import com.ada.banco.domain.usecase.cliente.CadastrarNovoCliente;
 import com.ada.banco.domain.usecase.cliente.ListarTodosOsClientes;
+import jakarta.validation.ConstraintViolation;
+import jakarta.validation.ConstraintViolationException;
+import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/clientes")
@@ -34,14 +38,15 @@ public class ClienteController {
     }
 
     @PostMapping
-    public ResponseEntity<Cliente> criarCliente(@RequestBody Cliente cliente) {
-        try{
+    public ResponseEntity<?> criarCliente(@RequestBody Cliente cliente) {
+        try {
             cadastrarNovoCliente.execute(cliente);
-            return ResponseEntity.status(HttpStatus.CREATED).body(cliente);
-        }catch (RuntimeException e){
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(cliente);
+            return ResponseEntity.status(HttpStatus.CREATED).body("Cliente criado com sucesso!");
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Erro ao criar cliente: " + e.getMessage());
         }
     }
+
 
     @GetMapping
     public ResponseEntity<List<Cliente>> listarClientes() {

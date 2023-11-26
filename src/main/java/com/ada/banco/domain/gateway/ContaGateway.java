@@ -12,4 +12,6 @@ public interface ContaGateway {
     Conta obterContaPorIdCliente(Long id);
 
     List<Conta> listarTodas();
+
+    Conta obterContaPorNumero(String numeroConta);
 }

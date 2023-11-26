@@ -5,6 +5,7 @@ import com.ada.banco.domain.gateway.ContaGateway;
 import com.ada.banco.domain.usecase.conta.CriarNovaConta;
 import com.ada.banco.domain.usecase.conta.ListarTodasAsContas;
 import com.ada.banco.domain.usecase.conta.ObterContaPorId;
+import com.ada.banco.domain.usecase.utils.GerarNumeroDeContaUnico;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -12,8 +13,8 @@ import org.springframework.context.annotation.Configuration;
 public class ContaConfig {
 
     @Bean
-    public CriarNovaConta criarNovaConta(ContaGateway contaGateway, ClienteGateway clienteGateway) {
-        return new CriarNovaConta(contaGateway, clienteGateway);
+    public CriarNovaConta criarNovaConta(ContaGateway contaGateway, ClienteGateway clienteGateway, GerarNumeroDeContaUnico gerarNumeroDeContaUnico) {
+        return new CriarNovaConta(contaGateway, clienteGateway, gerarNumeroDeContaUnico);
     }
 
     @Bean
@@ -24,5 +25,9 @@ public class ContaConfig {
     @Bean
     public ObterContaPorId obterContaPorId(ContaGateway contaGateway) {
         return new ObterContaPorId(contaGateway);
+    }
+
+    @Bean GerarNumeroDeContaUnico gerarNumeroDeContaUnico(ContaGateway contaGateway) {
+        return new GerarNumeroDeContaUnico(contaGateway);
     }
 }

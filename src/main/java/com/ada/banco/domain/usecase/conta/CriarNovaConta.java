@@ -4,14 +4,18 @@ import com.ada.banco.domain.gateway.ClienteGateway;
 import com.ada.banco.domain.gateway.ContaGateway;
 import com.ada.banco.domain.model.Cliente;
 import com.ada.banco.domain.model.Conta;
+import com.ada.banco.domain.usecase.utils.GerarNumeroDeContaUnico;
 
 public class CriarNovaConta {
     private final ContaGateway contaGateway;
     private final ClienteGateway clienteGateway;
 
-    public CriarNovaConta(ContaGateway contaGateway, ClienteGateway clienteGateway) {
+    private GerarNumeroDeContaUnico gerarNumeroDeContaUnico;
+
+    public CriarNovaConta(ContaGateway contaGateway, ClienteGateway clienteGateway, GerarNumeroDeContaUnico gerarNumeroDeContaUnico) {
         this.contaGateway = contaGateway;
         this.clienteGateway = clienteGateway;
+        this.gerarNumeroDeContaUnico = gerarNumeroDeContaUnico;
     }
 
     public Conta execute(Conta conta) throws Exception {
