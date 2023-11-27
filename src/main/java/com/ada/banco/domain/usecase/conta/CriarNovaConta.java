@@ -10,7 +10,7 @@ public class CriarNovaConta {
     private final ContaGateway contaGateway;
     private final ClienteGateway clienteGateway;
 
-    private GerarNumeroDeContaUnico gerarNumeroDeContaUnico;
+    private final GerarNumeroDeContaUnico gerarNumeroDeContaUnico;
 
     public CriarNovaConta(ContaGateway contaGateway, ClienteGateway clienteGateway, GerarNumeroDeContaUnico gerarNumeroDeContaUnico) {
         this.contaGateway = contaGateway;
@@ -27,7 +27,7 @@ public class CriarNovaConta {
         if(contaGateway.obterContaPorIdCliente(cliente.getId()) != null) {
             throw new Exception("Usuário já possui uma conta");
         }
-
+        conta.setNumeroConta(gerarNumeroDeContaUnico.execute());
         return contaGateway.salvar(conta);
     }
 }

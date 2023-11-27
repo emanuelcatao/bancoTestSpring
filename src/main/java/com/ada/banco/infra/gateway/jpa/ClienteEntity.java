@@ -9,7 +9,6 @@ import org.springframework.validation.annotation.Validated;
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
-@Setter
 @EqualsAndHashCode(of = "cpf")
 public class ClienteEntity {
     @Id

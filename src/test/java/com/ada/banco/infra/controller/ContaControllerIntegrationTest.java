@@ -1,7 +1,7 @@
 package com.ada.banco.infra.controller;
 
 import com.ada.banco.domain.model.Conta;
-import com.ada.banco.domain.model.TipoConta;
+import com.ada.banco.domain.model.enums.TipoConta;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -51,7 +51,7 @@ public class ContaControllerIntegrationTest {
     @Test
     @Sql("/sql/insert_cliente.sql") // Executa o script SQL para inserir um cliente antes de executar o teste
     public void testAbrirConta() throws Exception {
-        Conta novaConta = new Conta(null, "00000", TipoConta.SALARIO, new BigDecimal("750"), 1L);
+        Conta novaConta = new Conta(null, null, TipoConta.SALARIO, new BigDecimal("750"), 1L);
 
         String jsonConta = objectMapper.writeValueAsString(novaConta);
 
@@ -59,14 +59,13 @@ public class ContaControllerIntegrationTest {
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(jsonConta))
                 .andExpect(status().isCreated())
-                .andExpect(jsonPath("$.numeroConta").value("00000"))
+                .andExpect(jsonPath("$.idCliente").value(1))
                 .andExpect(jsonPath("$.tipoConta").value("SALARIO"))
                 .andExpect(jsonPath("$.saldo").value(750));
 
         // Verifica se a conta foi realmente salva (nao verifica o id por conta da inconsistencia esperada, já elencada na documentacao da classe)
         mockMvc.perform(get("/contas/1"))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.numeroConta").value("00000"))
                 .andExpect(jsonPath("$.tipoConta").value("SALARIO"))
                 .andExpect(jsonPath("$.saldo").value(750))
                 .andExpect(jsonPath("$.idCliente").value(1));
@@ -82,7 +81,6 @@ public class ContaControllerIntegrationTest {
         mockMvc.perform(get("/contas/1"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.id").value(1))
-                .andExpect(jsonPath("$.numeroConta").value("12345"))
                 .andExpect(jsonPath("$.tipoConta").value("CORRENTE"))
                 .andExpect(jsonPath("$.saldo").value(1000));
     }

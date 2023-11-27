@@ -1,6 +1,6 @@
 package com.ada.banco.domain.model;
 
-import jakarta.persistence.*;
+import com.ada.banco.domain.model.enums.TipoConta;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;

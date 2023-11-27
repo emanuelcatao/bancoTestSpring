@@ -3,7 +3,7 @@ package com.ada.banco.domain.usecase.transacao;
 import com.ada.banco.domain.gateway.ContaGateway;
 import com.ada.banco.domain.gateway.TransacaoGateway;
 import com.ada.banco.domain.model.Conta;
-import com.ada.banco.domain.model.TipoTransacao;
+import com.ada.banco.domain.model.enums.TipoTransacao;
 import com.ada.banco.domain.model.Transacao;
 
 import java.math.BigDecimal;
@@ -18,7 +18,7 @@ public class RealizarSaque {
         this.transacaoGateway = transacaoGateway;
     }
 
-    public void execute(Transacao transacao) throws Exception {
+    public Transacao execute(Transacao transacao) throws Exception {
         Conta conta = contaGateway.obterContaPorId(transacao.getContaOrigemId());
         if (transacao.getValor().compareTo(BigDecimal.ZERO) <= 0) {
             throw new Exception("Valor inválido para saque.");
@@ -26,21 +26,19 @@ public class RealizarSaque {
         if (conta == null) {
             throw new Exception("Conta não encontrada para saque.");
         }
-        if (contaGateway.obterContaPorId(transacao.getContaDestinoId())
-                .getSaldo().compareTo(transacao.getValor()) < 0) {
+        if (conta.getSaldo().compareTo(transacao.getValor()) < 0) {
             throw new Exception("Saldo insuficiente para saque.");
         }
         if (!TipoTransacao.SAQUE.equals(transacao.getTipo())) {
             throw new Exception("Tipo de transação inválido para saque.");
         }
 
-        BigDecimal novoSaldo = contaGateway.obterContaPorId(
-                transacao.getContaDestinoId()).getSaldo()
-                .subtract(transacao.getValor()
-                );
+        BigDecimal novoSaldo = conta.getSaldo().subtract(transacao.getValor());
         conta.setSaldo(novoSaldo);
         transacao.setData(LocalDateTime.now());
         contaGateway.salvar(conta);
         transacaoGateway.registrarTransacao(transacao);
+
+        return transacaoGateway.obterTransacaoPorId(transacao.getId());
     }
 }

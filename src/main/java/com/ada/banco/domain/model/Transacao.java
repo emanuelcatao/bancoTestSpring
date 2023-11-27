@@ -1,5 +1,6 @@
 package com.ada.banco.domain.model;
 
+import com.ada.banco.domain.model.enums.TipoTransacao;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

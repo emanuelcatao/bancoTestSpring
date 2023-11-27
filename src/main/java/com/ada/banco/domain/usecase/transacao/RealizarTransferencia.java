@@ -3,7 +3,7 @@ package com.ada.banco.domain.usecase.transacao;
 import com.ada.banco.domain.gateway.ContaGateway;
 import com.ada.banco.domain.gateway.TransacaoGateway;
 import com.ada.banco.domain.model.Conta;
-import com.ada.banco.domain.model.TipoTransacao;
+import com.ada.banco.domain.model.enums.TipoTransacao;
 import com.ada.banco.domain.model.Transacao;
 
 import java.math.BigDecimal;
@@ -17,7 +17,7 @@ public class RealizarTransferencia {
         this.transacaoGateway = transacaoGateway;
     }
 
-    public void execute(Transacao transacao) throws Exception {
+    public Transacao execute(Transacao transacao) throws Exception {
         Conta contaOrigem = contaGateway.obterContaPorId(transacao.getContaOrigemId());
         Conta contaDestino = contaGateway.obterContaPorId(transacao.getContaDestinoId());
         if (transacao.getValor().compareTo(BigDecimal.ZERO) <= 0) {
@@ -48,5 +48,7 @@ public class RealizarTransferencia {
 
         transacao.setData(java.time.LocalDateTime.now());
         transacaoGateway.registrarTransacao(transacao);
+
+        return transacao;
     }
 }

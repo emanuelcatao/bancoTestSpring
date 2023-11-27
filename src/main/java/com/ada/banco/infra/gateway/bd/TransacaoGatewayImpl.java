@@ -20,10 +20,10 @@ public class TransacaoGatewayImpl implements TransacaoGateway {
     private EntityManager entityManager;
 
     @Override
-    public boolean registrarTransacao(Transacao transacao) {
+    public Transacao registrarTransacao(Transacao transacao) {
         TransacaoEntity transacaoEntity = toEntity(transacao);
         entityManager.persist(transacaoEntity);
-        return transacaoEntity.getId() != null;
+        return toDomain(transacaoEntity);
     }
 
     @Override

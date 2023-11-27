@@ -1,6 +1,6 @@
 package com.ada.banco.infra.gateway.jpa;
 
-import com.ada.banco.domain.model.TipoTransacao;
+import com.ada.banco.domain.model.enums.TipoTransacao;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -13,7 +13,6 @@ import java.time.LocalDateTime;
 @Getter
 @Setter
 @EqualsAndHashCode(of = "id")
-@ToString(of = {"id", "tipo", "valor", "data", "contaOrigemId", "contaDestinoId"})
 public class TransacaoEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

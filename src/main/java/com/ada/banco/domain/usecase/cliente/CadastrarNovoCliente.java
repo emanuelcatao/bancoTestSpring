@@ -10,10 +10,10 @@ public class CadastrarNovoCliente {
         this.clienteGateway = clienteGateway;
     }
 
-    public void execute(Cliente dadosCliente) {
+    public Cliente execute(Cliente dadosCliente) {
         if(clienteGateway.buscarPorCpf(dadosCliente.getCpf()) != null){
             throw new RuntimeException("Cliente já cadastrado");
         }
-        clienteGateway.salvar(dadosCliente);
+        return clienteGateway.salvar(dadosCliente);
     }
 }

@@ -1,7 +1,7 @@
 package com.ada.banco.infra.controller;
 
 import com.ada.banco.domain.model.Conta;
-import com.ada.banco.domain.model.TipoConta;
+import com.ada.banco.domain.model.enums.TipoConta;
 import com.ada.banco.domain.usecase.conta.CriarNovaConta;
 import com.ada.banco.domain.usecase.conta.ListarTodasAsContas;
 import com.ada.banco.domain.usecase.conta.ObterContaPorId;
@@ -9,7 +9,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;

@@ -2,7 +2,7 @@ package com.ada.banco.domain.usecase.conta;
 
 import com.ada.banco.domain.gateway.ContaGateway;
 import com.ada.banco.domain.model.Conta;
-import com.ada.banco.domain.model.TipoConta;
+import com.ada.banco.domain.model.enums.TipoConta;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;

@@ -34,7 +34,6 @@ public class ClienteGatewayImpl implements ClienteGateway {
         }
     }
 
-
     @Override
     public Cliente salvar(Cliente cliente) {
         ClienteEntity clienteEntity = toEntity(cliente);
@@ -55,7 +54,6 @@ public class ClienteGatewayImpl implements ClienteGateway {
 
         return toDomain(clienteEntity);
     }
-
 
     @Override
     public Cliente buscarPorId(Long idCliente) {

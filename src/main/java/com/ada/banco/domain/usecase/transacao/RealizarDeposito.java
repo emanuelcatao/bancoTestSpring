@@ -3,7 +3,7 @@ package com.ada.banco.domain.usecase.transacao;
 import com.ada.banco.domain.gateway.ContaGateway;
 import com.ada.banco.domain.gateway.TransacaoGateway;
 import com.ada.banco.domain.model.Conta;
-import com.ada.banco.domain.model.TipoTransacao;
+import com.ada.banco.domain.model.enums.TipoTransacao;
 import com.ada.banco.domain.model.Transacao;
 
 import java.math.BigDecimal;
@@ -18,7 +18,7 @@ public class RealizarDeposito {
         this.transacaoGateway = transacaoGateway;
     }
 
-    public void execute(Transacao transacao) throws Exception {
+    public Transacao execute(Transacao transacao) throws Exception {
         Conta conta = contaGateway.obterContaPorId(transacao.getContaOrigemId());
         if (transacao.getValor().compareTo(BigDecimal.ZERO) <= 0) {
             throw new Exception("Valor inválido para depósito.");
@@ -36,5 +36,7 @@ public class RealizarDeposito {
         contaGateway.salvar(conta);
         transacao.setData(LocalDateTime.now());
         transacaoGateway.registrarTransacao(transacao);
+
+        return transacao;
     }
 }

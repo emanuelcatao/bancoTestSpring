@@ -47,7 +47,6 @@ public class ClienteController {
         }
     }
 
-
     @GetMapping
     public ResponseEntity<List<Cliente>> listarClientes() {
         List<Cliente> clientes = listarTodosOsClientes.execute();

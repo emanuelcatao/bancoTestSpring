@@ -6,7 +6,7 @@ import com.ada.banco.domain.model.Transacao;
 import java.util.List;
 
 public interface TransacaoGateway {
-    boolean registrarTransacao(Transacao transacao);
+    Transacao registrarTransacao(Transacao transacao);
 
     Transacao obterTransacaoPorId(Long id);
 

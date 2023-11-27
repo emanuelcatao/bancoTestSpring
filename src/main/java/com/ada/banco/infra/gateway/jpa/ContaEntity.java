@@ -1,6 +1,6 @@
 package com.ada.banco.infra.gateway.jpa;
 
-import com.ada.banco.domain.model.TipoConta;
+import com.ada.banco.domain.model.enums.TipoConta;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -11,9 +11,7 @@ import java.math.BigDecimal;
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
-@Setter
 @Table(name = "conta")
-@ToString(of = {"id", "idCliente", "numeroConta", "tipoConta", "saldo"})
 public class ContaEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
